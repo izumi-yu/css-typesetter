@@ -76,6 +76,10 @@ export default function texts(state = initialState, action) {
         texts.push(params);
       }
       return _.extend({}, state, { texts });
+    case ActionTypes.INSERT_TEXT:
+      let texts = state.texts;
+      texts.push(action.params);
+      return _.extend({}, state, { texts });
     case ActionTypes.REMOVE_TEXT:
       texts = state.texts.filter((text) => {
         return text.key !== action.key;

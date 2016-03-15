@@ -8,12 +8,14 @@ import HistoryAction from './actions/history';
 import Dropzone from 'react-dropzone';
 import DocImage from './components/docImage';
 import SettingPanel from './components/settingPanel';
+import ReactTooltip from 'react-tooltip';
 
 class Typesetter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       draggingKey: null,
+      resizingKey: null,
       edittingText: this.props.text.getDefaultParams()
     };
   }
@@ -29,6 +31,14 @@ class Typesetter extends React.Component {
     }
   }
 
+  handleResize(key) {
+    if (this.state.resizingKey !== key) {
+      this.setState({ resizingKey: key });
+    }
+    // Dummy for reflect valu to settingPanel
+    this.handleSelectText(key)
+  }
+
   findText(key) {
     return this.props.text.texts.find((text) => {
       return text.key === key;
@@ -39,12 +49,15 @@ class Typesetter extends React.Component {
     const text = this.findText(key);
     this.setState((state) => {
       if (text && (text.key !== state.edittingText.key ||
-            text.key === state.draggingKey)) {
+            text.key === state.draggingKey ||
+            text.key === state.resizingKey
+          )) {
         state.edittingText = text;
       } else {
         state.edittingText = this.props.text.getDefaultParams();
       }
       state.draggingKey = null;
+      state.resizingKey = null;
       return state;
     });
   }
@@ -58,6 +71,10 @@ class Typesetter extends React.Component {
     if (!this.findText(originalKey)) {
       this.setState({ edittingText: this.props.text.getDefaultParams() });
     }
+  }
+
+  handleInsertText() {
+    this.props.actions.insertText(this.props.text.getDefaultParams());
   }
 
   handleUpdateTextParams(params, cb) {
@@ -98,6 +115,7 @@ class Typesetter extends React.Component {
             {...this.props}
             edittingText={this.state.edittingText}
             handleDrag={_.throttle(this.handleDrag.bind(this), 500)}
+            handleResize={_.throttle(this.handleResize.bind(this), 500)}
             handleSelectText={this.handleSelectText.bind(this)}
             handleUpdateText={this.handleUpdateText.bind(this)}
             handleUpdateTextParams={this.handleUpdateTextParams.bind(this)}
@@ -110,9 +128,11 @@ class Typesetter extends React.Component {
             textClassName="text-block"
             handleSelectText={this.handleSelectText.bind(this)}
             handleUpdateText={this.handleUpdateText.bind(this)}
+            handleInsertText={this.handleInsertText.bind(this)}
             handleUpdateTextParams={this.handleUpdateTextParams.bind(this)}
           />
         </div>
+        <ReactTooltip />
       </div>
     );
   }

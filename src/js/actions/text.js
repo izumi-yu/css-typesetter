@@ -5,6 +5,10 @@ export default {
     return { type: ActionTypes.UPDATE_TEXT, params, originalKey };
   },
 
+  insertText(params) {
+    return { type: ActionTypes.INSERT_TEXT, params };
+  },
+
   removeText(key) {
     return { type: ActionTypes.REMOVE_TEXT, key };
   },

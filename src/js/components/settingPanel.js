@@ -107,6 +107,7 @@ export default class SettingPanel extends React.Component {
               }
               return (
                 <div>
+                  <button onClick={this.props.handleInsertText}>add</button>
                   <button onClick={this.handleCopyText.bind(this)}>copy</button>
                   <button onClick={this.handleRemoveText.bind(this)}>remove</button>
                 </div>

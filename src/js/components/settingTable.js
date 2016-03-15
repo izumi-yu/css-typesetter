@@ -6,13 +6,23 @@ export default class SettingTable extends React.Component {
     return (
       <table>
         <tbody>
-          <tr>
-            <td>class</td>
+          <tr data-tip="TableのColumn名と一致する必要があります">
+            <td>key</td>
             <td><input type="text" name="key" value={text.key} onChange={this.props.handleChange} /></td>
           </tr>
-          <tr>
-            <td>value</td>
+          <tr data-tip="">
+            <td>sample data</td>
             <td><input type="text" name="value" value={text.value} onChange={this.props.handleChange} /></td>
+          </tr>
+          <tr>
+            <td>Data type</td>
+            <td>
+              <select>
+                <option value="string">String</option>
+                <option value="currency">Currency</option>
+                <option value="check">Check</option>
+              </select>
+            </td>
           </tr>
           <tr>
             <td>x</td>
@@ -60,6 +70,9 @@ export default class SettingTable extends React.Component {
                 });
               })()}
             </td>
+            <tr>
+              <td>inputgroup</td>
+            </tr>
           </tr>
         </tbody>
       </table>

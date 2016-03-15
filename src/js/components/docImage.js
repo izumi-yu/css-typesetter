@@ -36,6 +36,15 @@ export default class DocImage extends React.Component {
     this.props.actions.updateText(params);
   }
 
+  handleStopResize(key, width, height) {
+    const params = {
+      key,
+      width,
+      height
+    };
+    this.props.actions.updateText(params);
+  }
+
   drawCanvas(img) {
     const setting = this.props.setting;
     const ctx = this.refs.canvas.getContext('2d');
@@ -152,9 +161,13 @@ export default class DocImage extends React.Component {
                 key={text.key}
                 axis="both"
                 start={{ x: Number(text.x), y: Number(text.y) }}
+                width={Number(text.width) || 100}
+                height={Number(text.height) || 40}
                 moveOnStartChange={true}
                 onDrag={this.props.handleDrag.bind(this.props, text.key)}
                 onStop={this.handleStopDragging.bind(this, text.key)}
+                onResize={this.handleStopResize.bind(this, text.key)}
+                onResizeStop={this.props.handleResize.bind(this, text.key)}
               >
                 {this.createDraggableInner(text)}
               </DraggableText>
